@@ -1,0 +1,174 @@
+﻿<Window x:Class="ROMResigner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ROMResigner"
+        xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+        Title="ROM Resigner v{0}" Height="400" Width="750" MinHeight="400" MinWidth="750">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Controls:BooleanToVisibilityConverter x:Key="BoolToHiddenConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Menu Height="20" VerticalAlignment="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Открыть файл" Click="OpenFiles_Click" x:Name="OpenFilesMenu" InputGestureText="CTRL+O"></MenuItem>
+                <MenuItem Header="Открыть папку" Click="OpenFolder_Click" x:Name="OpenSystemMenu" InputGestureText="CTRL+ALT+O"></MenuItem>
+                <MenuItem Header="Открыть ZIP" Click="OpenZIP_Click" x:Name="OpenZIPMenu" InputGestureText="CTRL+SHIFT+O"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Добавить сертификат" Click="AddCert_Click" x:Name="AddCertMenu" InputGestureText="CTRL+SHIFT+E"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Выход" x:Name="ExitMenu" Click="ExitMenu_Click_1"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Действие">
+                <MenuItem Header="Определить сертификаты" IsEnabled="False" Click="DetectCerts_Click" x:Name="DetectCertsMenu" InputGestureText="CTRL+E"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Начать обработку" IsEnabled="False" Click="Start_Click" x:Name="StartSignMenu" InputGestureText="CTRL+S"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе" Click="AboutMenu_Click" x:Name="AboutMenu" InputGestureText="F1"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Margin="0 20 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <ToolBar>
+                <Button x:Name="OpenFiles" Click="OpenFiles_Click" ToolTip="Открыть файлы (CTRL+O)">
+                    <Image x:Name="FileImage" Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Button>
+                <Button x:Name="OpenSystem" Click="OpenFolder_Click" ToolTip="Открыть папку с прошивкой (CTRL+ALT+O)">
+                    <Image x:Name="FolderImage" Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Button>
+                <Button x:Name="OpenZIP" Click="OpenZIP_Click" ToolTip="Открыть ZIP-файл с прошивкой (CTRL+SHIFT+O)">
+                    <Image x:Name="ZIPImage" Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Button>
+                <Separator/>
+                <Button x:Name="AddCert" Click="AddCert_Click" ToolTip="Добавить новый сертификат (CTRL+SHIFT+E)">
+                    <Image x:Name="AddCertImage" Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Button>
+                <Button x:Name="DetectCerts" IsEnabled="False" Click="DetectCerts_Click" ToolTip="Определить сертификаты (CTRL+E)">
+                    <Image x:Name="DetectCertImage" Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Button>
+                <TextBlock Text="Подпись ZIP: " Margin="3,0,0,0" VerticalAlignment="Center" />
+                <ComboBox x:Name="ZipSign"
+                      IsEnabled="False"
+                      VerticalAlignment="Center"
+                      IsEditable="False"
+                      Width="100" 
+                      DisplayMemberPath="ShortInfo" />
+                <Separator/>
+                <Button x:Name="StartSign" IsEnabled="False" Click="Start_Click" ToolTip="Начать обработку (CTRL+S)">
+                    <Image x:Name="StartImage" Stretch="None" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                </Button>
+            </ToolBar>
+            <ListView Grid.Row="1" Name="PackagesLW" ItemsSource="{Binding Packages}" SelectionChanged="PackagesLW_SelectionChanged_1" GridViewColumnHeader.Click="PackagesLWGridViewColumnHeader_Click" MouseDoubleClick="PackagesLW_MouseDoubleClick" AllowDrop="True" Drop="PackagesLW_Drop_1">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="RemoveMenu" Header="Удалить" IsEnabled="False" Click="RemoveItem_Click" InputGestureText="DEL" />
+                        <MenuItem x:Name="ShowCertMenu" Header="Текущий сертификат" Click="ShowCertMenu_Click" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn x:Name="FileColumn" Width="200" Header="Файл">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding Path=Icon}" Stretch="Uniform" Height="24" Width="24" RenderOptions.BitmapScalingMode="HighQuality" />
+                                            <TextBlock Text="{Binding Path=Name}" Margin="5,0,0,0" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                                <GridViewColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="{Binding ElementName=FileColumn, Path=ActualWidth}"
+                                              Height="{Binding ElementName=FileColumn, Path=ActualHeight}">
+                                            <TextBlock Text="{Binding ElementName=FileColumn, Path=Header}" TextAlignment="Center" />
+                                            <ComboBox x:Name="ListType" SelectedIndex="0" Width="20" Margin="0 0 5 0" HorizontalAlignment="Right" SelectionChanged="ListType_SelectionChanged_1" Loaded="ListType_Loaded_1">
+                                                <ComboBox.Template>
+                                                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                                                        <Grid>
+                                                            <ToggleButton Background="Transparent" BorderThickness="0" x:Name="ToggleButton" Focusable="false" ClickMode="Press"
+                                                                IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                                                <Grid Width="{Binding ElementName=ListType, Path=ActualWidth}">
+                                                                    <Polygon Points="0,0 3,4, 6,0" Stroke="Black" Fill="Black"
+                                                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                    <Border Width="1" Height="15" BorderThickness="1" BorderBrush="#999999" HorizontalAlignment="Left" />
+                                                                </Grid>
+                                                            </ToggleButton>
+                                                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                                                 AllowsTransparency="True"
+                                                                 Focusable="False" PopupAnimation="Slide">
+                                                                <Grid x:Name="DropDown" SnapsToDevicePixels="True"
+                                                                  MinWidth="{TemplateBinding ActualWidth}"
+                                                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                                                    <Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="Gray" Background="White"/>
+                                                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                                                    </ScrollViewer>
+                                                                </Grid>
+                                                            </Popup>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </ComboBox.Template>
+                                                <ComboBoxItem Content="Все типы" />
+                                                <ComboBoxItem Content="Только apk" />
+                                                <ComboBoxItem Content="Только jar" />
+                                            </ComboBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.HeaderTemplate>
+                            </GridViewColumn>
+                            <local:FixedWidthColumn FixedWidth="150" Header="Сертификат">
+                                <local:FixedWidthColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid MinHeight="25">
+                                            <TextBlock IsHitTestVisible="False" 
+                                                   VerticalAlignment="Center" 
+                                                   Text="{Binding StatusText}" />
+                                            <ComboBox IsEditable="False"
+                                                  Width="135" 
+                                                  Visibility="{Binding IsComboBoxVisible, Converter={StaticResource BoolToHiddenConverter}}" 
+                                                  ItemsSource="{Binding SignCertCollection}" 
+                                                  IsEnabled="{Binding IsChangeAllowed}" 
+                                                  SelectedItem="{Binding NewCert, Mode=TwoWay}"
+                                                  DisplayMemberPath="ShortInfo" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </local:FixedWidthColumn.CellTemplate>
+                            </local:FixedWidthColumn>
+                            <GridViewColumn Width="400" Header="Информация">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=NewCertInfo}" VerticalAlignment="Center" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <StatusBar Grid.Row="3">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <ProgressBar x:Name="ProgressBar" Width="110" Height="15" />
+                <StatusBarItem Grid.Column="1">
+                    <TextBlock x:Name="StatusText" />
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </Grid>
+</Window>

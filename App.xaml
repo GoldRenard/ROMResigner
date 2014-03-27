@@ -1,0 +1,28 @@
+﻿<Application x:Class="ROMResigner.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:about="clr-namespace:ROMResigner.About">
+    <Application.Resources>
+        <about:AboutAssemblyDataProvider x:Key="aboutDataProvider" />
+        <XmlDataProvider x:Key="aboutProvider" XPath="ApplicationInfo" IsAsynchronous="False" IsInitialLoadEnabled="True">
+            <x:XData>
+                <ApplicationInfo xmlns="">
+                    <Title>About WPF AboutBox[xml]</Title>
+                    <Product>Sample WPF AboutBox[xml]</Product>
+                    <Company>Microsoft Samples[xml]</Company>
+                    <Copyright>Copyright © 2009 - Pedro Silva[xml]</Copyright>
+                    <Description>This is a sample application to show off the new WPF About box.[xml]
+                    
+                        One Ring to rule them all,
+                        One Ring to find them,
+                        One Ring to bring them all
+                        and in the darkness bind them. 
+                        J. R. R. Tolkien, The Fellowship of the Ring, 1954
+                    </Description>
+                    <Version>1.0.0.0[xml]</Version>
+                    <Link Uri="http://www.gnu.org/licenses/gpl-2.0.html">Лицензионное соглашение</Link>
+                </ApplicationInfo>
+            </x:XData>
+        </XmlDataProvider>
+    </Application.Resources>
+</Application>

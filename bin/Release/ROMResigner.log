@@ -1,0 +1,14 @@
+[27.03.2014 14:07:16] Java Runtime Environment найден по пути "C:\Program Files (x86)\Java\jre7"
+[27.03.2014 14:07:16] Добавляем сертификат "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\media.x509.pem"
+[27.03.2014 14:07:16] Запускаем "C:\Program Files (x86)\Java\jre7\bin\keytool.exe" с аргументами "-printcert -v -file "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\media.x509.pem""
+[27.03.2014 14:07:16] Найден pk8 "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\media.pk8". Добавляем как пригодный для подписи
+[27.03.2014 14:07:16] Добавляем сертификат "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\platform.x509.pem"
+[27.03.2014 14:07:16] Запускаем "C:\Program Files (x86)\Java\jre7\bin\keytool.exe" с аргументами "-printcert -v -file "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\platform.x509.pem""
+[27.03.2014 14:07:16] Найден pk8 "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\platform.pk8". Добавляем как пригодный для подписи
+[27.03.2014 14:07:16] Добавляем сертификат "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\shared.x509.pem"
+[27.03.2014 14:07:16] Запускаем "C:\Program Files (x86)\Java\jre7\bin\keytool.exe" с аргументами "-printcert -v -file "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\shared.x509.pem""
+[27.03.2014 14:07:16] Найден pk8 "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\shared.pk8". Добавляем как пригодный для подписи
+[27.03.2014 14:07:16] Добавляем сертификат "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\testkey.x509.pem"
+[27.03.2014 14:07:16] Запускаем "C:\Program Files (x86)\Java\jre7\bin\keytool.exe" с аргументами "-printcert -v -file "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\testkey.x509.pem""
+[27.03.2014 14:07:16] Найден pk8 "C:\Users\Renard\AppData\Local\Temp\ROMResigner\Tools\testkey.pk8". Добавляем как пригодный для подписи
+[27.03.2014 14:15:27] Очищаем все списки...

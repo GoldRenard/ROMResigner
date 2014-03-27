@@ -1,0 +1,64 @@
+﻿<Window x:Class="ROMResigner.CertChoose"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Укажите сертификаты и ключевые файлы" Height="240" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="{x:Null}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+
+            <Style x:Key="Header" TargetType="{x:Type TextBlock}">
+                <Setter Property="VerticalAlignment" Value="Bottom" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Height" Value="25" />
+                <Setter Property="Width" Value="170" />
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="0" Text="Ключевой файл" Style="{StaticResource Header}" />
+        <TextBlock Grid.Column="2" Grid.Row="0" Text="Новый сертификат" Style="{StaticResource Header}" />
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Platform:" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Media:" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Shared:" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Testkey:" />
+
+        <ComboBox x:Name="cbnP" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding SignedPackages}" DisplayMemberPath="Name" />
+        <ComboBox x:Name="cbnM" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding SignedPackages}" DisplayMemberPath="Name" />
+        <ComboBox x:Name="cbnS" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding SignedPackages}" DisplayMemberPath="Name" />
+        <ComboBox x:Name="cbnT" Grid.Column="1" Grid.Row="4" ItemsSource="{Binding SignedPackages}" DisplayMemberPath="Name" />
+
+        <ComboBox x:Name="cbcP" Grid.Column="2" Grid.Row="1" DisplayMemberPath="ShortInfo" />
+        <ComboBox x:Name="cbcM" Grid.Column="2" Grid.Row="2" DisplayMemberPath="ShortInfo" />
+        <ComboBox x:Name="cbcS" Grid.Column="2" Grid.Row="3" DisplayMemberPath="ShortInfo" />
+        <ComboBox x:Name="cbcT" Grid.Column="2" Grid.Row="4" DisplayMemberPath="ShortInfo" />
+
+        <Grid Grid.ColumnSpan="4" Grid.Row="5">
+            <Button Content="OK" Height="25" Width="70" Click="Button_Click" />
+        </Grid>
+    </Grid>
+</Window>
